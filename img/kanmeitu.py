@@ -49,22 +49,22 @@ def getPic(res):
         src = img['src']  #获取img标签里的src内容
         img_url = src
         imgList.append(img_url)
-    # print(imgList)
-    # root = "F:/Pic/2/azhu4/"   #保存的路径
-    # if not os.path.exists(root):  #判断是否存在文件并下载img
-    #     os.mkdir(root)
-    #
-    #
-    # threads = []
-    # for imgUrl in imgList:
-    # #     print(img_url)
-    #     path = root + imgUrl.split('/')[-1]  #获取img的文件名
-    #     t = Thread(target=download, args = (imgUrl,path))
-    #     t.start()
-    #     threads.append(t)
-    # for t in threads:
-    #     t.join()
-    # #     # print(path)
+    print(imgList)
+    root = "F:/Pic/2/azhu5/"   #保存的路径
+    if not os.path.exists(root):  #判断是否存在文件并下载img
+        os.mkdir(root)
+
+
+    threads = []
+    for imgUrl in imgList:
+    #     print(img_url)
+        path = root + imgUrl.split('/')[-1]  #获取img的文件名
+        t = Thread(target=download, args = (imgUrl,path))
+        t.start()
+        threads.append(t)
+    for t in threads:
+        t.join()
+    #     # print(path)
 
 
 # 多线程下载
@@ -82,24 +82,24 @@ def getHtml1(url):
         return read.text
 if __name__ == '__main__':
     imgList =[]
-    for i in  range(0,10):
-        if i == 0:
-            url = "https://www.xgmn01.com/Xgyw/Xgyw24583.html"
-        else:
-            url = "https://www.xgmn01.com/Xgyw/Xgyw24583_"+str(i)+".html"#需要爬取图片的网页地址
-        print(url)
-        imgList.append(url)
+    # for i in  range(0,28):
+    #     if i == 0:
+    #         url = "https://www.xgmn01.com/Xiuren/Xiuren24077.html"
+    #     else:
+    #         url = "https://www.xgmn01.com/Xgyw/Xgyw24583_"+str(i)+".html"#需要爬取图片的网页地址
+    #     print(url)
+    #     imgList.append(url)
     # url1 = "https://kanmeitu1.cc/p/41609.html";
     # url1 = "https://kanmeitu1.cc/p/59117.html";
     # url1 = "https://kanmeitu1.cc/p/57484.html";
-    # url1 = "https://kanmeitu1.cc/p/59348.html";
-    # res = getHtml1(url1)
-    # getPic(res)
-    # print(imgList)
-    pool=ThreadPoolExecutor(50)
-    for l in imgList:
+    url1 = "https://kanmeitu1.cc/p/59348.html";
+    res = getHtml1(url1)
+    getPic(res)
+    print(imgList)
+    # pool=ThreadPoolExecutor(50)
+    # for l in imgList:
     #     # 多线程下载
     #     t = Thread(target=getHtml, args=(l,))
     #     t.start()
-        pool.submit(getHtml,l).add_done_callback(getPic)
-    pool.shutdown(wait=True);
+    #     pool.submit(getHtml,l).add_done_callback(getPic)
+    # pool.shutdown(wait=True);
