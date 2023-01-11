@@ -81,6 +81,7 @@ def getPic(res):
     #     print("res错误")
     #     return ;
     # print(res)
+    res= res.result()
     soup = BeautifulSoup(res, "html.parser")
     #通过分析网页内容，查找img的统一父类及属性
     all_img = soup.find('p').find_all('img')
@@ -112,7 +113,7 @@ def getPic(res):
             continue;
 
 # 多线程下载
-def getHtml(url,callback=getPic):
+def getHtml1(url,callback=getPic):
     read = requests.get(url)  #获取url
     read.raise_for_status()   #状态响应 返回200连接成功
     read.encoding = read.apparent_encoding  #从内容中分析出响应内容编码方式
@@ -122,33 +123,33 @@ def getHtml(url):
     read = requests.get(url,headers=headers)  #获取url
     read.raise_for_status()   #状态响应 返回200连接成功
     read.encoding = read.apparent_encoding  #从内容中分析出响应内容编码方式
-    # if read.status_code == 200:
-    #     return read.text
-    getPic(read.text)
+    if read.status_code == 200:
+        return read.text
+    # getPic(read.text)
 if __name__ == '__main__':
     begin = time.time()
     urls = [];
-    for i in  range(0,10):
+    for i in  range(0,29):
         if i == 0:
-            url = "https://www.xgmn01.com/Neiyiyouwu/Neiyiyouwu3990.html"
+            url = "https://www.xgmn01.com/Xiuren/Xiuren24077.html"
         else:
-            url = "https://www.xgmn01.com/Neiyiyouwu/Neiyiyouwu3990_"+str(i)+".html"#需要爬取图片的网页地址
-        print(url)
+            url = "https://www.xgmn01.com/Xiuren/Xiuren24077_"+str(i)+".html"#需要爬取图片的网页地址
+        # print(url)
         urls.append(url)
     print(urls)
-    pool=ThreadPoolExecutor(14)
+    pool=ThreadPoolExecutor(50)
     strList=[]
     for url in urls:
         # 多线程下载
-        t = Thread(target=getHtml, args=(url,))
-        t.start()
-        # future = pool.submit(getHtml,url)
+        # t = Thread(target=getHtml, args=(url,))
+        # t.start()
+        pool.submit(getHtml,url).add_done_callback(getPic)
     #     strList.append(future)
     #     # strList.append(future.result())
     #         # .add_done_callback(getPic)
     # for i in strList:
     #     i.add_done_callback(getPic)
-    # pool.shutdown(wait=True);
+    pool.shutdown(wait=True);
     times = time.time() - begin
     print(times)
 
